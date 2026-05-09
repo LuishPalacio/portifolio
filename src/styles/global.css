@@ -113,15 +113,15 @@ nav a:hover {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* WhatsApp float */
-.whatsapp-float {
+/* LinkedIn float */
+.linkedin-float {
     display: none;
     position: fixed;
     width: 60px;
     height: 60px;
     bottom: 20px;
     right: 20px;
-    background-color: #25d366;
+    background-color: #0077b5;
     color: #fff;
     border-radius: 50%;
     text-align: center;
@@ -134,7 +134,7 @@ nav a:hover {
     transition: transform 0.3s;
 }
 
-.whatsapp-float:hover {
+.linkedin-float:hover {
     transform: scale(1.1);
 }
 
@@ -1316,7 +1316,7 @@ footer {
         display: flex;
     }
 
-    .whatsapp-float {
+    .linkedin-float {
         display: flex;
     }
 
