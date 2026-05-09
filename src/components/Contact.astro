@@ -1,0 +1,59 @@
+---
+---
+
+<section id="contato" class="section">
+  <div class="container">
+    <h2 class="section-title fade-in">Vamos Conversar?</h2>
+
+    <div class="contact-grid fade-in">
+
+      <a href="mailto:luispalacio1617@gmail.com" class="contact-card">
+        <i class="fas fa-envelope"></i>
+        <span class="contact-label">Email</span>
+        <span class="contact-value">luispalacio1617@gmail.com</span>
+      </a>
+
+      <a href="https://www.linkedin.com/in/luishpalacio" target="_blank" class="contact-card">
+        <i class="fab fa-linkedin"></i>
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">/in/luishpalacio</span>
+      </a>
+
+      <a href="https://wa.me/5511916140651" target="_blank" class="contact-card">
+        <i class="fab fa-whatsapp"></i>
+        <span class="contact-label">WhatsApp</span>
+        <span class="contact-value">(11) 91614-0651</span>
+      </a>
+
+    </div>
+
+    <div class="github-stats fade-in">
+      <div class="stat-item">
+        <span class="stat-number" id="reposCount">—</span>
+        <span class="stat-label">Repositórios públicos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="followersCount">—</span>
+        <span class="stat-label">Seguidores</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="followingCount">—</span>
+        <span class="stat-label">Seguindo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  fetch('https://api.github.com/users/LuishPalacio')
+    .then((r) => r.json())
+    .then((data) => {
+      const repos = document.getElementById('reposCount');
+      const followers = document.getElementById('followersCount');
+      const following = document.getElementById('followingCount');
+      if (repos) repos.textContent = String(data.public_repos ?? '—');
+      if (followers) followers.textContent = String(data.followers ?? '—');
+      if (following) following.textContent = String(data.following ?? '—');
+    })
+    .catch(() => {});
+</script>

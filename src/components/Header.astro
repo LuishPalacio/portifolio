@@ -1,0 +1,78 @@
+---
+---
+
+<a href="https://wa.me/5511916140651" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<header>
+  <div class="container header-content">
+    <div class="logo-container">
+      <img src={`${import.meta.env.BASE_URL}/img/alto-luishp.png`} alt="Logo LuisHP" class="main-logo" />
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav id="nav">
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#experiencia">Experiência</a></li>
+        <li><a href="#habilidades">Habilidades</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#contato">Contato</a></li>
+        <li>
+          <a href="https://wa.me/5511916140651" class="btn-contato" target="_blank">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+        </li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <i class="fas fa-sun" id="themeIcon"></i>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const nav = document.getElementById('nav');
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+
+  // Restore saved theme
+  const savedTheme = localStorage.getItem('theme') ?? 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  if (themeIcon) {
+    themeIcon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    if (themeIcon) {
+      themeIcon.className = next === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+  });
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = nav?.classList.toggle('open');
+    hamburger.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.querySelectorAll('nav a').forEach((link) => {
+    link.addEventListener('click', () => {
+      nav?.classList.remove('open');
+      hamburger?.classList.remove('active');
+      hamburger?.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>

@@ -1,0 +1,71 @@
+---
+---
+
+<section class="hero">
+  <div class="container hero-container">
+
+    <div class="hero-text">
+      <p class="saudacao">Olá, meu nome é</p>
+      <h2>Luis Henrique Palacio.</h2>
+      <h3>Crio apps mobile que resolvem problemas reais.</h3>
+      <p class="descricao">
+        <strong>Desenvolvedor Mobile</strong> com React Native e Expo, em transição da educação para o
+        desenvolvimento. Graduando em Ciência da Computação com foco em experiências mobile fluidas,
+        intuitivas e bem arquitetadas.
+      </p>
+      <div class="hero-ctas">
+        <a href="#projetos" class="btn-cta">Ver meus projetos</a>
+        <a href="#sobre" class="btn-cta-secondary">Sobre mim</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="code-terminal" style="width:100%">
+        <div class="terminal-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">developer.ts</span>
+        </div>
+        <div class="terminal-body">
+          <pre class="code-block" id="codeBlock"><span class="cursor"></span></pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const lines = [
+    '<span class="kw">const</span> developer = {',
+    '  <span class="prop">name</span>: <span class="str">"Luis Palacio"</span>,',
+    '  <span class="prop">role</span>: <span class="str">"Mobile Developer"</span>,',
+    '  <span class="prop">stack</span>: [',
+    '    <span class="str">"React Native"</span>,',
+    '    <span class="str">"Expo SDK 54"</span>,',
+    '    <span class="str">"TypeScript"</span>,',
+    '    <span class="str">"Supabase"</span>,',
+    '  ],',
+    '  <span class="prop">building</span>: <span class="str">"FinFlow 🚀"</span>,',
+    '  <span class="prop">status</span>: <span class="str">"open to work ✅"</span>,',
+    '}',
+  ];
+
+  const codeBlock = document.getElementById('codeBlock');
+  let i = 0;
+  let html = '';
+
+  function revealLine() {
+    if (!codeBlock || i >= lines.length) {
+      if (codeBlock) codeBlock.innerHTML = html + '\n<span class="cursor"></span>';
+      return;
+    }
+    html += (i === 0 ? '' : '\n') + lines[i];
+    codeBlock.innerHTML = html + '\n<span class="cursor"></span>';
+    i++;
+    setTimeout(revealLine, 140);
+  }
+
+  setTimeout(revealLine, 1400);
+</script>
