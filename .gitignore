@@ -1,7 +1,17 @@
+# build output
 dist/
+dist-ssr/
+
+# dependencies
 node_modules/
-.astro/
+
+# local env
 .env
 .env.*
 !.env.example
+
+# editor / OS
 .DS_Store
+*.local
+*.log
+npm-debug.log*

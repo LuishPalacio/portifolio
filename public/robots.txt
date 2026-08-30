@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://luishpalacio.github.io/portifolio/sitemap.xml

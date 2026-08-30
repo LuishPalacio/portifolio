@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Luis Henrique Palacio" />
+    <meta name="theme-color" content="#0b0d12" />
+    <meta
+      name="description"
+      content="Desenvolvedor Full Stack e Mobile com eixo em React, React Native e TypeScript. Conheça meus projetos, experiência e habilidades."
+    />
+    <link rel="canonical" href="https://luishpalacio.github.io/portifolio/" />
+    <!-- sem favicon: data:, evita o request 404 de /favicon.ico -->
+    <link rel="icon" href="data:," />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Luis Henrique Palacio" />
+    <meta property="og:url" content="https://luishpalacio.github.io/portifolio/" />
+    <meta property="og:title" content="Portfólio | Luis Henrique Palacio" />
+    <meta
+      property="og:description"
+      content="Desenvolvedor Full Stack e Mobile com eixo em React, React Native e TypeScript."
+    />
+    <meta
+      property="og:image"
+      content="https://luishpalacio.github.io/portifolio/img/luis-foto.jpeg"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Portfólio | Luis Henrique Palacio" />
+    <meta
+      name="twitter:description"
+      content="Desenvolvedor Full Stack e Mobile com eixo em React, React Native e TypeScript."
+    />
+    <meta
+      name="twitter:image"
+      content="https://luishpalacio.github.io/portifolio/img/luis-foto.jpeg"
+    />
+
+    <title>Portfólio | Luis Henrique Palacio</title>
+
+    <script>
+      // Aplica o tema antes da pintura para evitar flash (FOUC).
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
