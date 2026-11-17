@@ -19,34 +19,34 @@ interface SkillCard {
 const SKILLS: SkillCard[] = [
   {
     Icon: ReactIcon,
-    title: 'React & Mobile',
-    text: 'React, React Native, Next.js, Expo SDK 54, Expo Router, TypeScript, React Navigation, Reanimated',
+    title: 'Front-end & Mobile',
+    text: 'React, Next.js, React Native, Expo SDK 54, Expo Router, TypeScript, Tailwind CSS, Reanimated, EAS Build',
     highlight: true,
   },
   {
     Icon: ServerIcon,
     title: 'Back-end & APIs',
-    text: 'Node.js, Python (Flask, Django), APIs REST, arquitetura MVC, POO',
+    text: 'Java (Spring Boot, JWT), Python (Flask, Django), Node.js, APIs REST, Edge Functions, arquitetura MVC e em camadas, POO',
   },
   {
     Icon: AiIcon,
-    title: 'Integração com IA',
-    text: 'APIs de LLMs (Groq, Llama 3.3 70B), agentes estruturados via JSON Schema, linguagem natural convertida em ações validadas',
+    title: 'IA Generativa & Agentes',
+    text: 'LLMs (Groq: gpt-oss-120b, Llama 3.3 70B), tool/function calling, saídas estruturadas com JSON Schema, RAG. O modelo interpreta, o código valida e o usuário confirma',
   },
   {
     Icon: DatabaseIcon,
-    title: 'Banco de Dados',
-    text: 'PostgreSQL, Supabase (Auth + Row Level Security), MySQL, SQLAlchemy, SQLite, modelagem relacional',
+    title: 'Banco de Dados & Análise',
+    text: 'PostgreSQL, Supabase (Auth + RLS + RPCs), MySQL, SQLite, DuckDB, SQLAlchemy, Flyway · scikit-learn, matplotlib',
   },
   {
     Icon: CodeIcon,
     title: 'Mobile Nativo & Linguagens',
-    text: 'Kotlin, Jetpack Compose, MVVM · JavaScript, TypeScript, Python, C++, HTML5, CSS3',
+    text: 'Kotlin, Jetpack Compose, MVVM · TypeScript, JavaScript, Python, Java, C++, HTML5, CSS3',
   },
   {
     Icon: WrenchIcon,
-    title: 'Ferramentas & DevOps',
-    text: 'Git, GitHub, GitHub Actions (CI/CD), Docker, Docker Compose, pytest, Postman, Linux, VS Code',
+    title: 'DevOps, Cloud & Ferramentas',
+    text: 'Git, GitHub Actions (CI/CD), Docker, Docker Compose, AWS (S3, EC2), Railway, Vercel, Microsoft Entra ID (SSO), Linux, pytest, Postman',
   },
   {
     Icon: ChipIcon,

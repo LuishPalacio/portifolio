@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { IconType } from 'react-icons';
 import { EMAIL, GITHUB_USER, LINKS } from '../lib/links';
 import { GithubIcon, LinkedinIcon, MailIcon } from '../lib/icons';
+import { PROJECT_COUNT } from '../data/projects';
+import AnimatedNumber from './AnimatedNumber';
 
 interface GitHubData {
   public_repos: number;
@@ -36,10 +38,10 @@ export default function Contact() {
     return () => controller.abort();
   }, []);
 
-  const repos = data ? String(data.public_repos) : '…';
+  const repos = data ? data.public_repos : null;
   const yearsOnGitHub = data
-    ? String(Math.max(1, new Date().getFullYear() - new Date(data.created_at).getFullYear()))
-    : '…';
+    ? Math.max(1, new Date().getFullYear() - new Date(data.created_at).getFullYear())
+    : null;
 
   return (
     <section id="contato" className="section">
@@ -63,15 +65,15 @@ export default function Contact() {
 
         <div className="github-stats fade-in">
           <div className="stat-item">
-            <span className="stat-number">{repos}</span>
+            <AnimatedNumber className="stat-number" value={repos} />
             <span className="stat-label">Repositórios públicos</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">{yearsOnGitHub}</span>
+            <AnimatedNumber className="stat-number" value={yearsOnGitHub} />
             <span className="stat-label">Anos no GitHub</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">6+</span>
+            <AnimatedNumber className="stat-number" value={PROJECT_COUNT} />
             <span className="stat-label">Projetos no portfólio</span>
           </div>
         </div>

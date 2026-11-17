@@ -339,6 +339,16 @@ nav a.active {
     transform-origin: center 28%;
 }
 
+.sobre-subtitle {
+    color: var(--text-heading);
+    font-size: 1.05rem;
+    margin: 24px 0 12px;
+}
+
+.sobre-principles li {
+    font-size: 0.95rem;
+}
+
 .sobre-tags {
     display: flex;
     gap: 10px;
@@ -518,6 +528,45 @@ nav a.active {
     border-color: rgba(var(--accent-rgb), 0.25);
 }
 
+/* Certificação com link: mesma pílula, mas clicável (abre o certificado). */
+.cert-list .cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.cert-list .cert-link svg {
+    font-size: 0.7rem;
+    opacity: 0.75;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.cert-list .cert-link:hover {
+    background: rgba(var(--accent-rgb), 0.16);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.25);
+    transform: translateY(-1px);
+}
+
+.cert-list .cert-link:hover svg {
+    opacity: 1;
+    transform: translate(1px, -1px);
+}
+
+.cert-list .cert-link:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
 /* ── Skills ─────────────────────────────────────────────────── */
 #habilidades {
     background-color: var(--bg-color);
@@ -630,16 +679,15 @@ nav a.active {
     background-color: var(--card-bg);
     padding: 30px;
     border-radius: 8px;
-    transition: transform 0.3s;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
     border: 1px solid var(--border-subtle);
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
+    /* Contexto de empilhamento próprio: o .card-spotlight (z-index -1) fica acima
+       do fundo do card e abaixo do conteúdo. Elevação e inclinação no hover vêm do
+       Motion (Projects.tsx), por isso não há transition de transform aqui. */
+    isolation: isolate;
 }
 
 /* Animated border on hover */
@@ -1115,17 +1163,24 @@ footer {
 }
 
 /* ── Phone mockup ───────────────────────────────────────────── */
+/* A coluna do celular estica até a altura da linha do grid, que é definida pelo texto do
+   card. Com `container-type: size`, a coluna não influencia essa altura. O celular ocupa a
+   altura toda na proporção real da captura (540×1170), sem cortar o app, e é limitado pela
+   largura da coluna quando o texto fica muito alto. */
 .finflow-phone-col {
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: stretch;
+    container-type: size;
 }
 
 .phone-mockup {
-    width: 190px;
-    height: 370px;
+    width: 240px; /* fallback para navegadores sem container queries */
+    width: min(100cqw, 100cqh * 540 / 1170);
+    aspect-ratio: 540 / 1170;
     background: #0d1117;
-    border-radius: 32px;
+    border-radius: 36px;
     border: 2px solid rgba(var(--accent-rgb), 0.3);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(var(--accent-rgb), 0.08);
     overflow: hidden;
@@ -1228,6 +1283,195 @@ footer {
 .stat-label {
     font-size: 0.8rem;
     color: var(--text-secondary);
+}
+
+/* ── Terminal interativo ────────────────────────────────────── */
+/* Cores fixas: o terminal é escuro nos dois temas. */
+.code-terminal {
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.code-terminal:focus-within {
+    border-color: rgba(var(--accent-rgb), 0.55);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(var(--accent-rgb), 0.18);
+}
+
+.terminal-body {
+    max-height: 460px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #30363d transparent;
+}
+
+.term-session,
+.term-hint,
+.term-input-line {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.75;
+    color: #c9d1d9;
+}
+
+.term-hint {
+    margin: 6px 0 0;
+    color: #8b949e;
+}
+
+.term-hint kbd {
+    font-family: inherit;
+    color: #58c4dc;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    padding: 0 5px;
+}
+
+.term-entry {
+    margin-top: 6px;
+}
+
+.term-prompt {
+    color: #7ee787;
+    white-space: nowrap;
+}
+
+.term-output {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.term-muted  { color: #8b949e; }
+.term-accent { color: #58c4dc; }
+.term-error  { color: #ff7b72; }
+
+.term-link {
+    color: #79c0ff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.term-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.term-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #e6edf3;
+    font: inherit;
+    caret-color: #58c4dc;
+}
+
+/* ── Filtro de projetos ─────────────────────────────────────── */
+.project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.filter-btn {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--card-bg);
+    color: var(--text-secondary);
+    font-family: monospace;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.filter-btn:hover {
+    color: var(--text-heading);
+    border-color: rgba(var(--accent-rgb), 0.5);
+}
+
+.filter-btn:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Texto escuro sobre o azul: contraste AA nos dois temas. */
+.filter-btn.active {
+    color: var(--bg-color);
+    border-color: transparent;
+}
+
+.filter-pill {
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--accent-color);
+    box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.35);
+}
+
+.filter-count {
+    min-width: 1.7em;
+    padding: 0 6px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    text-align: center;
+    color: var(--accent-color);
+    background: rgba(var(--accent-rgb), 0.12);
+}
+
+.filter-btn.active .filter-count {
+    color: var(--bg-color);
+    background: color-mix(in srgb, var(--bg-color) 22%, transparent);
+}
+
+/* popLayout do AnimatePresence tira os cards que saem do fluxo com position:absolute. */
+.projects-grid {
+    position: relative;
+}
+
+/* ── Brilho que segue o mouse nos cards ─────────────────────── */
+.card-spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(
+        420px circle at var(--mx, 50%) var(--my, 50%),
+        rgba(var(--accent-rgb), 0.14),
+        transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+@media (hover: hover) {
+    .project-card:hover .card-spotlight {
+        opacity: 1;
+    }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 /* ── Scroll animations ──────────────────────────────────────── */

@@ -13,4 +13,4 @@ export const GITHUB_USER = 'LuishPalacio';
 export const CV_URL = 'cv/luis-henrique-palacio.pdf';
 
 /** Site publicado (usado em metadados). */
-export const SITE_URL = 'https://luishpalacio.github.io/portfolio/';
+export const SITE_URL = 'https://luishpalacio.github.io/portifolio/';

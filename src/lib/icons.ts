@@ -14,4 +14,5 @@ export {
   FaMicrochip as ChipIcon,
   FaRobot as AiIcon,
   FaFilePdf as PdfIcon,
+  FaArrowUpRightFromSquare as ExternalIcon,
 } from 'react-icons/fa6';

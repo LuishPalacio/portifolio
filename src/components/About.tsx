@@ -3,13 +3,22 @@ import { asset } from '../lib/assets';
 const TAGS = [
   'React',
   'React Native',
-  'TypeScript',
   'Next.js',
-  'Node.js',
-  'Supabase / PostgreSQL',
+  'TypeScript',
   'Python',
-  'Kotlin',
+  'Java / Spring Boot',
+  'Supabase / PostgreSQL',
+  'IA Generativa & Agentes',
+  'Docker',
   'Inglês intermediário',
+];
+
+const PRINCIPLES = [
+  'Começo pelo problema, não pela ferramenta.',
+  'Nenhum dado entra sem validação e nenhuma ação crítica roda sem confirmação.',
+  'Todo bug encontrado vira teste automatizado.',
+  'Prefiro um erro explícito a um resultado improvisado e errado.',
+  'Documento as decisões técnicas.',
 ];
 
 export default function About() {
@@ -20,26 +29,33 @@ export default function About() {
         <div className="sobre-layout">
           <div className="sobre-content fade-in">
             <p>
+              <strong>Desenvolvedor Full Stack</strong> com foco em{' '}
+              <strong>React, React Native e TypeScript</strong>. Construo aplicações web e mobile da
+              interface ao banco de dados e integro <strong>IA generativa com segurança</strong>: o
+              modelo interpreta, o código valida e o usuário confirma.
+            </p>
+            <p>
               Estudante do <strong>6º semestre de Ciência da Computação</strong> no Centro
               Universitário Braz Cubas (conclusão prevista para Dezembro/2027). Atuo como{' '}
-              <strong>Assistente de T.I (Pleno)</strong> na ODEEN Intelligence for Security,
-              consolidando uma base prática de infraestrutura, suporte técnico e redes, depois de
-              dois anos como <strong>Professor de Informática</strong> na Escola DiscoverON.
+              <strong>Assistente de T.I (Pleno)</strong> na ODEEN Intelligence for Security, onde,
+              além de infraestrutura, redes e suporte, desenvolvi e coloquei em produção o sistema
+              interno de controle de ativos de T.I. Antes, fui{' '}
+              <strong>Professor de Informática e Robótica</strong> por dois anos, o que desenvolveu
+              minha comunicação e a facilidade para explicar decisões técnicas.
             </p>
             <p>
-              Meu foco de carreira é o <strong>desenvolvimento de software</strong>, com eixo
-              principal em <strong>React, React Native e TypeScript</strong>. Construo apps mobile
-              com Expo e dashboards web com <strong>Next.js</strong>, back-end com{' '}
-              <strong>Node.js</strong> e <strong>Python</strong> (Flask, Django), e bancos no
-              Supabase / PostgreSQL com Row Level Security. Também trabalho integração de{' '}
-              <strong>agentes de IA</strong> que traduzem linguagem natural em ações validadas.
+              No dia a dia uso <strong>Next.js</strong> e Expo no front, <strong>Node.js</strong>,{' '}
+              <strong>Python</strong> (Flask) e <strong>Java (Spring Boot)</strong> no back-end, e
+              Supabase / PostgreSQL com Row Level Security. Tenho familiaridade com Kotlin nativo
+              (Jetpack Compose, MVVM) e com eletrônica e IoT (Arduino, ESP32, Raspberry Pi Pico).
+              Atualmente estudando <strong>cibersegurança</strong> e <strong>AWS</strong>.
             </p>
-            <p>
-              Tenho familiaridade com <strong>Kotlin nativo</strong> (Jetpack Compose, MVVM) e
-              contato ativo com eletrônica e IoT (Arduino, ESP32, Raspberry Pi Pico), o que reforça
-              minha visão de integração entre hardware e software. Interesse crescente em{' '}
-              <strong>cibersegurança</strong> e <strong>inteligência artificial</strong>.
-            </p>
+            <h3 className="sobre-subtitle">Como eu trabalho</h3>
+            <ul className="experience-list sobre-principles">
+              {PRINCIPLES.map((principle) => (
+                <li key={principle}>{principle}</li>
+              ))}
+            </ul>
             <div className="sobre-tags">
               {TAGS.map((tag) => (
                 <span key={tag}>{tag}</span>
