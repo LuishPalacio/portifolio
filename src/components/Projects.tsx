@@ -1,7 +1,8 @@
 import type { Ref } from 'react';
 import { AnimatePresence, m } from 'motion/react';
 import { asset } from '../lib/assets';
-import { ExternalIcon, GithubIcon, StarIcon } from '../lib/icons';
+import { CheckCircleIcon, ExternalIcon, GithubIcon, StarIcon } from '../lib/icons';
+import { inView, pop, stagger } from '../lib/motion';
 import { useTilt } from '../hooks/useTilt';
 import {
   CATEGORIES,
@@ -11,6 +12,7 @@ import {
   type Project,
   type ProjectCategory,
 } from '../data/projects';
+import SectionHeading from './SectionHeading';
 
 const FINFLOW_TAGS = [
   'React Native',
@@ -40,19 +42,19 @@ const countFor = (filter: CategoryId) =>
 
 /**
  * Entrada ao rolar até o card, saída ao sair do filtro e reposicionamento (layout)
- * quando outros cards somem. Substitui o `.fade-in`, que só observa elementos
- * presentes no carregamento e deixaria invisíveis os cards que voltam pelo filtro.
+ * quando outros cards somem. Cada card observa a própria entrada na tela, então os
+ * cards que voltam pelo filtro também aparecem animados.
  */
 const cardMotion = {
   layout: true,
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  whileHover: { y: -5 },
+  initial: { opacity: 0, y: 36, scale: 0.97 },
+  whileInView: { opacity: 1, y: 0, scale: 1 },
+  whileHover: { y: -6 },
   viewport: { once: true, amount: 0.15 },
   exit: { opacity: 0, scale: 0.94, transition: { duration: 0.2 } },
   transition: {
     layout: { type: 'spring', bounce: 0.18, duration: 0.5 },
-    default: { duration: 0.45, ease: 'easeOut' },
+    default: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 } as const;
 
@@ -69,18 +71,28 @@ export default function Projects({ filter, onFilterChange }: ProjectsProps) {
   return (
     <section id="projetos" className="section">
       <div className="container">
-        <h2 className="section-title fade-in">Projetos</h2>
+        <SectionHeading index="05" label="projetos">
+          Projetos
+        </SectionHeading>
 
-        <div className="project-filters fade-in" role="group" aria-label="Filtrar projetos por área">
+        <m.div
+          className="project-filters"
+          role="group"
+          aria-label="Filtrar projetos por área"
+          variants={stagger(0.05)}
+          {...inView}
+        >
           {CATEGORIES.map(({ id, label }) => {
             const active = id === filter;
             return (
-              <button
+              <m.button
                 key={id}
                 type="button"
                 className={`filter-btn${active ? ' active' : ''}`}
                 aria-pressed={active}
                 onClick={() => onFilterChange(id)}
+                variants={pop}
+                whileTap={{ scale: 0.94 }}
               >
                 {active && (
                   <m.span
@@ -91,10 +103,10 @@ export default function Projects({ filter, onFilterChange }: ProjectsProps) {
                 )}
                 <span className="filter-label">{label}</span>
                 <span className="filter-count">{countFor(id)}</span>
-              </button>
+              </m.button>
             );
           })}
-        </div>
+        </m.div>
         <p className="sr-only" aria-live="polite">
           {`Mostrando ${total} ${total === 1 ? 'projeto' : 'projetos'}`}
         </p>
@@ -112,21 +124,13 @@ export default function Projects({ filter, onFilterChange }: ProjectsProps) {
   );
 }
 
-/** Card em destaque: só o brilho segue o mouse (inclinar um card largo fica estranho). */
-function FinflowCard({ ref }: { ref?: Ref<HTMLDivElement> }) {
-  const spotlight = useTilt(0);
-
+/** Card em destaque, sem inclinação (inclinar um card largo fica estranho). */
+function FinflowCard({ ref }: { ref?: Ref<HTMLElement> }) {
   return (
-    <m.div
-      ref={ref}
-      className="project-card featured"
-      {...cardMotion}
-      onPointerMove={spotlight.onPointerMove}
-    >
-      <span className="card-spotlight" aria-hidden="true" />
+    <m.article ref={ref} className="project-card featured card glow" {...cardMotion} whileHover={{ y: -4 }}>
       <div className="project-inner">
         <div className="project-info">
-          <span className="featured-badge">
+          <span className="badge featured-badge">
             <StarIcon aria-hidden /> Projeto Destaque
           </span>
           <h3>FinFlow Finanças</h3>
@@ -139,7 +143,10 @@ function FinflowCard({ ref }: { ref?: Ref<HTMLDivElement> }) {
           </p>
           <ul className="project-highlights">
             {FINFLOW_HIGHLIGHTS.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>
+                <CheckCircleIcon aria-hidden />
+                <span>{item}</span>
+              </li>
             ))}
           </ul>
           <div className="tags">
@@ -160,77 +167,92 @@ function FinflowCard({ ref }: { ref?: Ref<HTMLDivElement> }) {
               href="https://finflow-mauve-chi.vercel.app"
               target="_blank"
               rel="noreferrer"
-              className="btn-project"
+              className="btn-project btn-project-accent"
             >
               <ExternalIcon aria-hidden /> Acessar Painel Web
             </a>
           </div>
         </div>
         <div className="finflow-phone-col">
-          <div className="phone-mockup">
-            <picture>
-              <source srcSet={asset('img/finflow-screenshot.webp')} type="image/webp" />
-              <img
-                src={asset('img/finflow-screenshot.jpeg')}
-                alt="Tela inicial do app FinFlow com saldo, visão do mês e despesas por categoria (valores fictícios)"
-                className="phone-screenshot"
-                width={540}
-                height={1170}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
+          <div className="phone-glow" aria-hidden="true" />
+          <div className="phone-float">
+            <div className="phone-mockup">
+              <div className="phone-screen">
+                <picture>
+                  <source srcSet={asset('img/finflow-screenshot.webp')} type="image/webp" />
+                  <img
+                    src={asset('img/finflow-screenshot.jpeg')}
+                    alt="Tela inicial do app FinFlow com saldo, visão do mês e despesas por categoria (valores fictícios)"
+                    className="phone-screenshot"
+                    width={540}
+                    height={1170}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </m.div>
+    </m.article>
   );
 }
 
-function ProjectCard({ project, ref }: { project: Project; ref?: Ref<HTMLDivElement> }) {
+function ProjectCard({ project, ref }: { project: Project; ref?: Ref<HTMLElement> }) {
   const tilt = useTilt();
+  const Icon = project.icon;
 
   return (
-    <m.div
+    <m.article
       ref={ref}
-      className="project-card"
+      className="project-card card glow"
       {...cardMotion}
       style={tilt.style}
       onPointerMove={tilt.onPointerMove}
       onPointerLeave={tilt.onPointerLeave}
     >
-      <span className="card-spotlight" aria-hidden="true" />
-      <div className="project-info">
-        {project.featured && (
-          <span className="featured-badge">
-            <StarIcon aria-hidden /> Destaque
-          </span>
-        )}
-        <h3>
-          {project.title}
-          {project.status && <span className="status-badge">{project.status}</span>}
-        </h3>
-        <p>{project.description}</p>
-        <div className="tags">
-          {project.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
-        {(project.repo || project.live) && (
-          <div className="project-links">
-            {project.repo && (
-              <a href={project.repo} target="_blank" rel="noreferrer" className="btn-project">
-                <GithubIcon aria-hidden /> {project.repoLabel ?? 'Ver Código'}
-              </a>
+      <div className="project-top">
+        <span className="card-icon project-icon" aria-hidden="true">
+          <Icon />
+        </span>
+        {(project.featured || project.status) && (
+          <div className="project-badges">
+            {project.featured && (
+              <span className="badge featured-badge">
+                <StarIcon aria-hidden /> Destaque
+              </span>
             )}
-            {project.live && (
-              <a href={project.live} target="_blank" rel="noreferrer" className="btn-project">
-                <ExternalIcon aria-hidden /> {project.liveLabel ?? 'Ver Online'}
-              </a>
-            )}
+            {project.status && <span className="badge status-badge">{project.status}</span>}
           </div>
         )}
       </div>
-    </m.div>
+      <h3>{project.title}</h3>
+      <p>{project.description}</p>
+      <div className="tags">
+        {project.tags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
+      {(project.repo || project.live) && (
+        <div className="project-links">
+          {project.repo && (
+            <a href={project.repo} target="_blank" rel="noreferrer" className="btn-project">
+              <GithubIcon aria-hidden /> {project.repoLabel ?? 'Ver Código'}
+            </a>
+          )}
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-project btn-project-accent"
+            >
+              <ExternalIcon aria-hidden /> {project.liveLabel ?? 'Ver Online'}
+            </a>
+          )}
+        </div>
+      )}
+    </m.article>
   );
 }

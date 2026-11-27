@@ -1,5 +1,16 @@
+import type { CSSProperties } from 'react';
+import { m } from 'motion/react';
+import type { Variants } from 'motion/react';
 import { asset } from '../lib/assets';
-import { ExternalIcon } from '../lib/icons';
+import { CertificateIcon, ExternalIcon, GraduationIcon, LanguageIcon } from '../lib/icons';
+import { EASE_OUT, fadeUp, inView, rise, stagger } from '../lib/motion';
+import SectionHeading from './SectionHeading';
+
+/** Blocos dos semestres crescem de baixo para cima, em sequência. */
+const growY: Variants = {
+  hidden: { opacity: 0, scaleY: 0.2 },
+  show: { opacity: 1, scaleY: 1, transition: { duration: 0.5, ease: EASE_OUT } },
+};
 
 interface Certification {
   name: string;
@@ -44,50 +55,118 @@ const CERTIFICATIONS: Certification[] = [
   { name: 'Networking Basics', issuer: 'Cisco', url: 'certificados/networking-basics-cisco.pdf' },
 ];
 
+/** Andamento da graduação (Jan 2024 a Dez 2027 = 8 semestres). */
+const SEMESTER = 6;
+const TOTAL_SEMESTERS = 8;
+const YEARS = ['2024', '2025', '2026', '2027'];
+
+const semesterState = (index: number) =>
+  index < SEMESTER - 1 ? 'done' : index === SEMESTER - 1 ? 'current' : 'next';
+
 const resolveUrl = (url: string) => (/^https?:\/\//.test(url) ? url : asset(url));
 
 export default function Education() {
   return (
     <section id="formacao" className="section">
       <div className="container">
-        <h2 className="section-title fade-in">Formação & Certificações</h2>
+        <SectionHeading index="03" label="formação">
+          Formação & <span className="text-gradient">Certificações</span>
+        </SectionHeading>
+
         <div className="edu-grid">
-          <div className="edu-card fade-in">
+          <m.div className="edu-card card glow" variants={rise} custom={0} {...inView}>
+            <span className="card-icon" aria-hidden="true">
+              <GraduationIcon />
+            </span>
             <p className="edu-period">Jan 2024 a Dez 2027</p>
             <h3 className="edu-title">Bacharelado em Ciência da Computação</h3>
             <p className="edu-org">Centro Universitário Braz Cubas · Mogi das Cruzes, SP</p>
-            <p className="edu-note">6º semestre · conclusão prevista para Dez/2027</p>
+
+            <div className="progress">
+              <div className="progress-head">
+                <span>
+                  {SEMESTER}º de {TOTAL_SEMESTERS} semestres
+                </span>
+                <span>conclusão prevista para Dez/2027</span>
+              </div>
+              {/* Um bloco por semestre: concluídos, o atual (pulsando) e os que faltam. */}
+              <m.div
+                className="semesters"
+                aria-hidden="true"
+                variants={stagger(0.07, 0.2)}
+                {...inView}
+                viewport={{ once: true, amount: 1 }}
+              >
+                {Array.from({ length: TOTAL_SEMESTERS }, (_, i) => (
+                  <m.span
+                    key={i}
+                    className={`semester ${semesterState(i)}`}
+                    style={{ '--t': i / (TOTAL_SEMESTERS - 1) } as CSSProperties}
+                    variants={growY}
+                  />
+                ))}
+              </m.div>
+              <div className="semester-years" aria-hidden="true">
+                {YEARS.map((year) => (
+                  <span key={year}>{year}</span>
+                ))}
+              </div>
+            </div>
+
             <p className="edu-org edu-secondary">
               Ensino Médio Completo · E.E. Profª Brasilísia Machado Lobo
             </p>
-          </div>
 
-          <div className="edu-card fade-in">
+            <h3 className="edu-title edu-title-spaced">
+              <LanguageIcon aria-hidden className="edu-title-icon" /> Idiomas
+            </h3>
+            <div className="lang-list">
+              <span>
+                Português <em>nativo</em>
+              </span>
+              <span>
+                Inglês <em>intermediário</em>
+              </span>
+            </div>
+          </m.div>
+
+          <m.div className="edu-card card glow" variants={rise} custom={1} {...inView}>
+            <span className="card-icon" aria-hidden="true">
+              <CertificateIcon />
+            </span>
             <h3 className="edu-title">Certificações</h3>
-            <div className="cert-list">
+            <m.ul className="cert-list" variants={stagger(0.07, 0.25)} {...inView}>
               {CERTIFICATIONS.map((cert) => {
                 const label = `${cert.name} · ${cert.issuer}${cert.hours ? ` (${cert.hours})` : ''}`;
-                return cert.url ? (
-                  <a
-                    key={cert.name}
-                    className="cert-link"
-                    href={resolveUrl(cert.url)}
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Ver certificado"
-                    aria-label={`${label}: ver certificado (abre em nova aba)`}
-                  >
-                    {label}
-                    <ExternalIcon aria-hidden />
-                  </a>
-                ) : (
-                  <span key={cert.name}>{label}</span>
+                const content = (
+                  <>
+                    <span className="cert-issuer">{cert.issuer}</span>
+                    <span className="cert-name">{cert.name}</span>
+                    {cert.hours && <span className="cert-hours">{cert.hours}</span>}
+                  </>
+                );
+                return (
+                  <m.li key={cert.name} variants={fadeUp}>
+                    {cert.url ? (
+                      <a
+                        className="cert-row cert-link"
+                        href={resolveUrl(cert.url)}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="Ver certificado"
+                        aria-label={`${label}: ver certificado (abre em nova aba)`}
+                      >
+                        {content}
+                        <ExternalIcon aria-hidden className="cert-open" />
+                      </a>
+                    ) : (
+                      <span className="cert-row">{content}</span>
+                    )}
+                  </m.li>
                 );
               })}
-            </div>
-            <h3 className="edu-title edu-title-spaced">Idiomas</h3>
-            <p className="edu-org">Português (nativo) · Inglês (intermediário)</p>
-          </div>
+            </m.ul>
+          </m.div>
         </div>
       </div>
     </section>

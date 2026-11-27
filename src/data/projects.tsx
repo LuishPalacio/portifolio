@@ -1,4 +1,16 @@
 import type { ReactNode } from 'react';
+import type { IconType } from 'react-icons';
+import {
+  BoxesIcon,
+  ChartIcon,
+  DraftingIcon,
+  GuitarIcon,
+  KanbanIcon,
+  LaptopCodeIcon,
+  ListCheckIcon,
+  ReceiptIcon,
+  RouteIcon,
+} from '../lib/icons';
 
 /** Filtros da seção de projetos (também usados pelo comando `projetos` do terminal). */
 export const CATEGORIES = [
@@ -22,6 +34,8 @@ export const FINFLOW_CATEGORIES: ProjectCategory[] = ['ia', 'web', 'mobile', 'ba
 
 export interface Project {
   title: string;
+  /** Ícone no topo do card. */
+  icon: IconType;
   description: ReactNode;
   tags: string[];
   categories: ProjectCategory[];
@@ -42,6 +56,7 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     title: 'Agente de IA para Análise de Vendas',
+    icon: ChartIcon,
     categories: ['ia', 'backend'],
     featured: true,
     description: (
@@ -60,6 +75,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Empório da Música · Agente de Atendimento',
+    icon: GuitarIcon,
     categories: ['ia', 'backend'],
     featured: true,
     description: (
@@ -77,6 +93,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'StockFlow',
+    icon: BoxesIcon,
     categories: ['web', 'backend'],
     featured: true,
     description: (
@@ -94,6 +111,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Task Manager',
+    icon: ListCheckIcon,
     categories: ['web', 'backend'],
     status: 'em desenvolvimento',
     description: (
@@ -108,6 +126,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'FoodNode Analytics',
+    icon: RouteIcon,
     categories: ['backend', 'academico'],
     description: (
       <>
@@ -123,6 +142,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Este Portfólio',
+    icon: LaptopCodeIcon,
     categories: ['web'],
     description: (
       <>
@@ -137,6 +157,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Sistema de Gerenciamento de Tarefas',
+    icon: KanbanIcon,
     categories: ['web', 'backend', 'academico'],
     description: (
       <>
@@ -151,6 +172,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Ferreira & Moreira',
+    icon: DraftingIcon,
     categories: ['web'],
     description: (
       <>
@@ -167,6 +189,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Sistema de Pedidos (Backend)',
+    icon: ReceiptIcon,
     categories: ['backend', 'academico'],
     description: (
       <>

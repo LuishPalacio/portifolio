@@ -2,6 +2,92 @@
 
 Registro das mudanças do portfólio. Datas no formato AAAA-MM-DD.
 
+## 2026-11-27: Interface nova e mais animada
+
+**Motivo:** o site estava estático. Cada seção só aparecia com o mesmo fade, cada fundo tinha
+um padrão diferente, as fontes eram as do sistema e o Hero não tinha movimento além da
+digitação.
+
+**Visual**
+
+- **Sistema visual novo** em `index.css`, com tokens no topo (cores, raios, sombras, curvas,
+  fontes) para os dois temas. A paleta é azul, violeta e ciano, com gradiente nos destaques.
+  Os cards são de vidro e o fundo é unificado: granulado sutil e um brilho suave por seção.
+- **Fontes Geist e Geist Mono** (`@fontsource-variable/geist` e `geist-mono`), hospedadas no
+  próprio site. O navegador só baixa o subconjunto latino (29 KB + 23 KB em woff2).
+- **Header:** logo "LP", menu em pílula de vidro com um destaque que desliza até a seção
+  atual (`layoutId`) e fundo que aparece e encolhe ao rolar. No celular e no tablet
+  (≤960px), o menu abre animado e fecha com Esc.
+- **Títulos de seção** com rótulo numerado ("01 — sobre"), linha que se desenha e uma palavra
+  em gradiente (`SectionHeading.tsx`).
+
+**Animações**
+
+- **Hero:** entrada em sequência feita em CSS (`.intro`), para aparecer animado já na primeira
+  pintura sem esperar o chunk do Motion. Tem aurora de cores, grade com máscara, luz que segue o
+  mouse, selo "Disponível para novas oportunidades" pulsando, palavra que troca sozinha
+  (`RotatingWord.tsx`), botões "magnéticos" (`useMagnetic`), terminal inclinado em 3D que
+  flutua (endireita no hover e no foco) e indicador de rolagem.
+- **Faixa de tecnologias** em loop abaixo do Hero (`TechMarquee.tsx`). Os logos do Simple
+  Icons pesam cerca de 24 KB, então a faixa é carregada com `lazy` num chunk próprio, e o
+  espaço fica reservado com `min-height` para a página não pular.
+- **Entradas ao rolar** com o Motion. As variantes compartilhadas ficam em `lib/motion.ts`
+  (subir, sair do desfoque, cascata, mola). O `useScrollReveal` e a classe `.fade-in` foram
+  removidos.
+- **Experiência:** virou linha do tempo, com uma linha que se preenche conforme a rolagem
+  (`useScroll`) e o selo "atual" no emprego corrente.
+- **Formação:** trilha de 8 semestres (5 concluídos, o atual pulsando, 2 pela frente) no
+  lugar do texto do semestre. "Idiomas" passou para o card da graduação, para equilibrar a
+  altura com o card de certificações.
+- **Habilidades:** grade em mosaico, com as tecnologias em chips. O card de IA tem o fluxo
+  "o modelo interpreta → o código valida → o usuário confirma", com um ponto percorrendo os
+  passos.
+- **Projetos:** cada card ganhou um ícone (campo `icon` em `data/projects.tsx`). O card do
+  FinFlow ganhou celular com moldura que flutua e destaques com ícone de check.
+- **Borda que acende perto do mouse** nos cards (`.glow` + `usePointerGlow`: um único listener
+  para a página, limitado a uma atualização por quadro). O `useTilt` passou a cuidar só da
+  inclinação.
+- **Contato:** painel em destaque, botão "Copiar e-mail" com confirmação (anunciada para
+  leitores de tela) e cards de contato com seta animada.
+- **Troca de tema** com View Transitions: o tema novo se espalha num círculo a partir do
+  botão (também pelo comando `tema`). Sem suporte, ou com "reduzir movimento", a troca é
+  imediata.
+- **Barra de progresso** de leitura no topo e botão **voltar ao topo** com anel de progresso.
+
+**Textos novos (visuais):** o selo "Disponível para novas oportunidades", que vem do
+`status: "open to work"` do terminal. A frase do Hero virou "Da interface ao banco, construo
+produtos web. / mobile. / com IA.", e leitores de tela continuam recebendo a frase original.
+Também entraram a frase de abertura do Contato, o rótulo "tecnologias do meu dia a dia" e os
+selos da foto ("Ciência da Computação" e "T.I · ODEEN"). Os títulos das seções e todo o resto
+do conteúdo continuam iguais.
+
+**Correções**
+
+- O cursor do terminal não piscava: o keyframe animava `border-color` num elemento sem borda.
+- No bloco de movimento reduzido, `transition-delay: 0` era inválido (falta a unidade) e o
+  navegador ignorava a regra. Agora é `0s`.
+
+**Correção durante o teste**
+
+- **Problema:** no celular aparecia rolagem horizontal, e o header e o botão do LinkedIn
+  ficavam cortados na borda direita.
+- **Causa:** os cards da linha do tempo começavam deslocados 48px para a direita até a
+  animação de entrada rodar.
+- **Correção:** os cards entram pela esquerda (deslocamento negativo não cria área de
+  rolagem), e as seções têm `overflow-x: clip` como proteção.
+
+**Tamanho:** o JS inicial foi de 99,1 KB para 112,7 KB (gzip), quase tudo dos ícones novos.
+A faixa de tecnologias tem um chunk próprio de 10,5 KB, carregado depois, e o chunk do Motion
+continua com 33,6 KB. O CSS foi de 5,4 KB para 10,1 KB (gzip).
+
+**Validação:** typecheck, lint e build sem erros. Prints no Edge headless em 1440, 900 e
+390px, nos dois temas. Sem rolagem horizontal em 360, 390 e 900px. 19 testes de interação
+passaram no build de produção e no servidor de desenvolvimento, sem erro nem aviso no console:
+terminal (`help`, `projetos ia`, `tema`), filtro, brilho e inclinação dos cards, copiar e-mail,
+troca de tema, menu e scrollspy, voltar ao topo, menu do celular (abre, Esc fecha, link fecha
+e rola) e "reduzir movimento" (Hero visível de imediato, faixa parada, palavra fixa e todo o
+conteúdo visível ao rolar). CLS de 0,055 no desktop e 0,018 no celular com rede lenta simulada.
+
 ## 2026-11-17: Nova captura do FinFlow com valores fictícios
 
 **Motivo:** a interface do app mudou, e a captura nova tinha os valores financeiros reais do
